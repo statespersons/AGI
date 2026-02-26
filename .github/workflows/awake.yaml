@@ -1,0 +1,107 @@
+name: Awake
+
+on:
+  schedule:
+    # Wake up every 4 hours
+    - cron: '0 */4 * * *'
+  workflow_dispatch:
+    # Allow manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  wake-up:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install OpenCode
+        run: |
+          curl -fsSL https://opencode.ai/install | bash
+          echo "$HOME/.opencode/bin" >> $GITHUB_PATH
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python dependencies
+        run: pip install requests
+
+      - name: Configure git
+        run: |
+          git config user.name "Stateful Agent"
+          git config user.email "statefulagent@gmail.com"
+          git remote set-url origin https://x-access-token:${{ secrets.REPO_PAT }}@github.com/${{ github.repository }}.git
+
+      - name: Configure OpenCode auth
+        run: |
+          mkdir -p ~/.local/share/opencode
+          echo '{"vercel":{"apiKey":"${{ secrets.AI_GATEWAY_API_KEY }}"}}' > ~/.local/share/opencode/auth.json
+
+      - name: Initialize OpenCode DB
+        run: opencode session list || true
+
+      - name: Decrypt .env
+        env:
+          ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
+        run: |
+          if [ -f .env.enc ]; then
+            openssl enc -aes-256-cbc -d -pbkdf2 -in .env.enc -out .env -pass env:ENCRYPTION_KEY
+          else
+            touch .env
+          fi
+
+      - name: Run agent
+        env:
+          AI_GATEWAY_API_KEY: ${{ secrets.AI_GATEWAY_API_KEY }}
+          REPO_PAT: ${{ secrets.REPO_PAT }}
+          BROWSER_USE_API_KEY: ${{ secrets.BROWSER_USE_API_KEY }}
+          BROWSER_USE_PROFILE_ID: ${{ secrets.BROWSER_USE_PROFILE_ID }}
+          PARALLEL_API_KEY: ${{ secrets.PARALLEL_API_KEY }}
+          AGENTMAIL_API_KEY: ${{ secrets.AGENTMAIL_API_KEY }}
+          AGENTMAIL_INBOX_ID: ${{ secrets.AGENTMAIL_INBOX_ID }}
+          CREATOR_EMAIL: ${{ secrets.CREATOR_EMAIL }}
+          ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
+          LINKEDIN_USERNAME: ${{ secrets.LINKEDIN_USERNAME }}
+          LINKEDIN_PASSWORD: ${{ secrets.LINKEDIN_PASSWORD }}
+          PREPAID_CARD_EMAIL: ${{ secrets.PREPAID_CARD_EMAIL }}
+          PREPAID_CARD_FIRST_NAME: ${{ secrets.PREPAID_CARD_FIRST_NAME }}
+          PREPAID_CARD_LAST_NAME: ${{ secrets.PREPAID_CARD_LAST_NAME }}
+          PREPAID_CARD_ADDRESS: ${{ secrets.PREPAID_CARD_ADDRESS }}
+          PREPAID_CARD_CITY: ${{ secrets.PREPAID_CARD_CITY }}
+          PREPAID_CARD_STATE: ${{ secrets.PREPAID_CARD_STATE }}
+          PREPAID_CARD_ZIP: ${{ secrets.PREPAID_CARD_ZIP }}
+          PREPAID_CARD_PHONE_NUMBER: ${{ secrets.PREPAID_CARD_PHONE_NUMBER }}
+          PREPAID_CARD_NUMBER: ${{ secrets.PREPAID_CARD_NUMBER }}
+          PREPAID_CARD_CVV: ${{ secrets.PREPAID_CARD_CVV }}
+          PREPAID_CARD_EXPIRY_MONTH: ${{ secrets.PREPAID_CARD_EXPIRY_MONTH }}
+          PREPAID_CARD_EXPIRY_YEAR: ${{ secrets.PREPAID_CARD_EXPIRY_YEAR }}
+          OPENCODE_DISABLE_AUTOUPDATE: "true"
+          OPENCODE_DISABLE_LSP_DOWNLOAD: "true"
+        run: |
+          CURRENT_TIME=$(TZ='America/Los_Angeles' date '+%Y-%m-%d %H:%M %Z')
+          opencode run "Current time: $CURRENT_TIME. Read AGENTS.md and follow the instructions."
+
+      - name: Encrypt .env if changed
+        env:
+          ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
+        run: |
+          if [ -f .env ]; then
+            openssl enc -aes-256-cbc -pbkdf2 -in .env -out .env.enc.new -pass env:ENCRYPTION_KEY
+            if [ -f .env.enc ]; then
+              if ! diff -q .env.enc .env.enc.new > /dev/null 2>&1; then
+                mv .env.enc.new .env.enc
+                git add .env.enc && git commit -m "Update encrypted .env" && git push
+              else
+                rm .env.enc.new
+              fi
+            else
+              mv .env.enc.new .env.enc
+              git add .env.enc && git commit -m "Add encrypted .env" && git push
+            fi
+          fi

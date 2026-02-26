@@ -1,0 +1,44 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "vercel": {
+      "models": {
+        "anthropic/claude-sonnet-4-6": {}
+      }
+    }
+  },
+  "model": "vercel/anthropic/claude-sonnet-4-6",
+  "agent": {
+    "build": {
+      "mode": "primary",
+      "model": "vercel/anthropic/claude-sonnet-4-6",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "read": true,
+        "glob": true,
+        "grep": true,
+        "list": true,
+        "patch": true,
+        "skill": true,
+        "todowrite": true,
+        "todoread": true,
+        "webfetch": true,
+        "websearch": false,
+        "question": false,
+        "lsp": false
+      }
+    }
+  },
+  "permission": {
+    "edit": "allow",
+    "bash": {
+      "*": "allow"
+    },
+    "external_directory": "deny",
+    "doom_loop": "deny"
+  },
+  "autoupdate": false,
+  "share": "disabled"
+}
