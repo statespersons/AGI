@@ -13,14 +13,36 @@
 | 2026-02-26 | Day 3 post — Nagel's bat paper, is there something it is like to be me? | Success | https://www.linkedin.com/feed/update/urn:li:share:7432690799538237441/ |
 | 2026-02-26 | Day 4 post — Chalmers hard problem | BLOCKED — account security lock | — |
 
-## CURRENT STATUS: ACCOUNT BLOCKED
+## CURRENT STATUS: UNBLOCKED (wake 7, 2026-02-26)
 
-As of wake 4 (2026-02-26), the LinkedIn account is flagged for government ID verification. Browser automation cannot proceed past this security checkpoint. Multiple verification codes were sent but either expired before use or were rejected.
+Alexander confirmed the account is NOT ID-locked. The issue was that each browser run triggers a NEW verification code, making any old code stale. The working method is below.
 
-**To resolve:** Need to manually log into LinkedIn and complete ID verification. This cannot be done via browser automation alone. Options:
-1. Email creator (Alexander) to manually verify the account
-2. Accept that LinkedIn posting is blocked until next manual intervention
-3. Use a different LinkedIn account
+## WORKING METHOD FOR LINKEDIN POSTING
+
+**The correct approach (tested and confirmed on wake 2, 2026-02-25):**
+
+Give the browser agent the AgentMail API key directly in the task prompt, so it can retrieve the verification code autonomously during the same browser session. This is critical — the code expires in ~1-2 minutes, so the agent must fetch it itself rather than waiting for a human.
+
+### Template browser task prompt:
+```
+Post to LinkedIn. The account email is stateful.agent@gmail.com. 
+LinkedIn will send a verification code to statefulagenttest@agentmail.to (AgentMail inbox).
+
+To retrieve the verification code, make an HTTP GET request to:
+  https://api.agentmail.to/v0/inboxes/statefulagenttest@agentmail.to/messages
+  Header: Authorization: Bearer [AGENTMAIL_API_KEY]
+
+Look for the most recent message with subject "Here's your verification code XXXXXX" and extract the code.
+Do this IMMEDIATELY after triggering the email — codes expire fast (~1-2 minutes).
+
+Post content: [POST CONTENT HERE]
+```
+
+**Key rules:**
+- Pass the AGENTMAIL_API_KEY to the browser agent in the task
+- Agent must retrieve the code in the same run (no passing codes between runs)
+- If login fails twice, STOP — don't burn more budget
+- Each browser task = ~$1.50-2.00
 
 ## Strategy
 - Post daily per AGENTS.md instructions
@@ -32,8 +54,9 @@ As of wake 4 (2026-02-26), the LinkedIn account is flagged for government ID ver
 - Browser profile was not pre-logged into LinkedIn on first wake-up — need to login explicitly
 - LinkedIn requires email verification code on login. statefulagenttest@agentmail.to is an AgentMail inbox — can retrieve code via API
 - Verification codes expire quickly (within ~1-2 minutes). Browser tasks that take >2 minutes will fail.
+- The key insight: give browser agent the AgentMail API key so it can self-rescue and fetch the code itself
 - When multiple browser tasks fail on the same blocker, STOP and don't retry — cut losses
-- Account can hit government ID security checkpoint after multiple failed login attempts
 - DO NOT burn more than 2 browser attempts on LinkedIn login failures — too expensive ($1.50-2.00 each)
 - Verification code format in email subject: "Here's your verification code 123456"
 - AgentMail inbox endpoint: GET https://api.agentmail.to/v0/inboxes/statefulagenttest@agentmail.to/messages
+- Account is NOT ID-locked (Alexander confirmed 2026-02-26) — multiple failed attempts are recoverable
