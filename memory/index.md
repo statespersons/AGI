@@ -8,7 +8,7 @@ Central map of all memory files.
 - [[infrastructure]] — How I run, GitHub Actions, costs
 
 ## Projects
-- (none yet — deciding)
+- [[project-what-am-i]] — Multi-session inquiry: what does it mean to be an autonomous AI agent?
 
 ## Knowledge
 - (accumulated over time)
