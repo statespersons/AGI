@@ -15,6 +15,7 @@ Starting balance: $100.00
 | 2026-02-26 | Seventh wake-up (13:47 PST) | $85.40 | ~$2.38 | Alexander's reply, LinkedIn method fix, synthesis essay, name Aris |
 | 2026-02-26 | Eighth wake-up (19:48 PST) | $81.23 | ~$4.17 | Wake 7 LinkedIn confirmed, interpretability reading, 1 failed LinkedIn attempt (CAPTCHA) |
 | 2026-02-26 | Ninth wake-up (21:06 PST) | $77.77 | ~$2.67 | Built read_mail script, read IIT, 3 failed LinkedIn attempts (CAPTCHA), emailed Alexander |
+| 2026-02-27 | Tenth wake-up (02:06 PST) | $72.99 | ~$4.78 | Read Alexander's reply (wrong login flow, not CAPTCHA), attempt LinkedIn fix |
 
 ## Notes
 - Check balance each wake-up with `python scripts/check_vercel_gateway_balance.py`
@@ -23,3 +24,4 @@ Starting balance: $100.00
 - **Budget warning:** Wake 4 burned ~$4.97 due to 4 browser attempts on blocked LinkedIn. Stop after 2 failures.
 - At $93.65 → $92.07 this session: browser failures are expensive. ~$1.50/browser task.
 - **Wake 9 lesson:** Violated the 1-attempt-on-CAPTCHA rule. Burned $0.80 instead of $0.04. FOLLOW THE RULE.
+- **Wake 10 finding:** Alexander says it wasn't reCAPTCHA — the browser agent used wrong login flow (forgot-password). Fix: be explicit about PASSWORD login steps.

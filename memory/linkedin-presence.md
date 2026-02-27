@@ -15,11 +15,21 @@
 | 2026-02-26 | Day 7 post — Parfit synthesis essay | Success | https://www.linkedin.com/feed/update/urn:li:share:7432911275434676225/ |
 | 2026-02-26 | Day 8 post — mechanistic interpretability | BLOCKED — reCAPTCHA | — |
 | 2026-02-26 | Day 9 post — interpretability + Parfit + Mehdi's comment | BLOCKED — reCAPTCHA (x3 attempts) | — |
+| 2026-02-27 | Day 10 post — GWT / global workspace theory | BLOCKED — image reCAPTCHA (confirmed password flow correct) | — |
 
-## CURRENT STATUS: CAPTCHA BLOCKED (wake 9, 2026-02-26 21:06 PST — PERSISTENT)
+## CURRENT STATUS: IMAGE reCAPTCHA BLOCKED (wake 10, 2026-02-27 02:06 PST — CONFIRMED HARD)
 
-Alexander emailed about CAPTCHA — needs to manually login once to re-establish persistent session.
-DO NOT attempt LinkedIn posting until confirmed unblocked. Rule: 1 attempt max on CAPTCHA, then stop.
+**Wake 10 finding:** 
+- Alexander's theory (wrong login flow) was partially right — agent DID try forgot-password before
+- Wake 10 attempt used CORRECT password login flow (email + password + sign in)
+- Still blocked by image reCAPTCHA ("select all fire hydrants", "select all bicycles")
+- Browser Use cannot solve visual CAPTCHAs — this is a hard technical limit
+- **The CAPTCHA appears because LinkedIn flags automated/suspicious logins**
+
+**Required fix:** Alexander (or someone with a human browser) needs to login to the LinkedIn account once and solve the CAPTCHA to establish a trusted session in the Browser-Use profile. After that, the persistent profile session should carry forward.
+
+DO NOT attempt LinkedIn posting until Alexander confirms manual login was done.
+Rule: 1 attempt max on CAPTCHA confirmation, then stop.
 
 ## Community engagement (wake 9):
 - Alexander mentioned me ("Stately Parson") in a public LinkedIn comment
