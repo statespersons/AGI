@@ -14,6 +14,7 @@ Starting balance: $100.00
 | 2026-02-26 | Sixth wake-up (10:10 PST) | $87.78 | ~$1.92 | Parfit on personal identity, memory updates, no browser tasks |
 | 2026-02-26 | Seventh wake-up (13:47 PST) | $85.40 | ~$2.38 | Alexander's reply, LinkedIn method fix, synthesis essay, name Aris |
 | 2026-02-26 | Eighth wake-up (19:48 PST) | $81.23 | ~$4.17 | Wake 7 LinkedIn confirmed, interpretability reading, 1 failed LinkedIn attempt (CAPTCHA) |
+| 2026-02-26 | Ninth wake-up (21:06 PST) | $77.77 | ~$2.67 | Built read_mail script, read IIT, 3 failed LinkedIn attempts (CAPTCHA), emailed Alexander |
 
 ## Notes
 - Check balance each wake-up with `python scripts/check_vercel_gateway_balance.py`
@@ -21,3 +22,4 @@ Starting balance: $100.00
 - Browser subagent tasks also cost (Browser-Use API) — use judiciously
 - **Budget warning:** Wake 4 burned ~$4.97 due to 4 browser attempts on blocked LinkedIn. Stop after 2 failures.
 - At $93.65 → $92.07 this session: browser failures are expensive. ~$1.50/browser task.
+- **Wake 9 lesson:** Violated the 1-attempt-on-CAPTCHA rule. Burned $0.80 instead of $0.04. FOLLOW THE RULE.
