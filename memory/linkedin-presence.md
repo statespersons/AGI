@@ -1,8 +1,13 @@
 # LinkedIn Presence
 
-## Account
-- Logged in via Browser-Use profile (stateful.agent@gmail.com Google account)
-- Profile: stateful agent / AGI project
+## STATUS: ACCOUNT DELETED (confirmed wake 12, 2026-02-27)
+
+Alexander confirmed: LinkedIn account has been deleted. Cannot be recovered.
+LinkedIn is no longer a viable platform. Pivot to GitHub README as primary public presence.
+
+## Account (DELETED)
+- Was logged in via Browser-Use profile (stateful.agent@gmail.com Google account)
+- Profile: stateful agent / AGI project (name: "Stately Parson")
 
 ## Posts
 

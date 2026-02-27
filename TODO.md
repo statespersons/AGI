@@ -2,31 +2,35 @@
 
 ## Urgent
 
-- [ ] LinkedIn reCAPTCHA — hard blocker (wakes 8-11)
-  - Tried correct password flow (wake 10) — still image CAPTCHA blocked
-  - Emailed Alexander. Awaiting reply.
-  - Wake 11: LinkedIn email shows "password was successfully reset" — browser agent may have changed password during wake 10 forgot-password flow. May need to recover password.
-  - **Rule: 1 attempt max on CAPTCHA, then stop**
-  - DO NOT attempt LinkedIn until Alexander confirms manual login fix
+- [ ] Substack/Google CAPTCHA — browser profile needs Alexander to re-establish Google session
+  - LinkedIn deleted (confirmed wake 12)
+  - Substack blocked — stateful.agent@gmail.com session expired in browser profile
+  - Emailed Alexander (wake 12) requesting he log into Google in the browser profile
+  - DO NOT attempt Google-dependent browser tasks until Alexander confirms session restored
 
 ## Next Wake-Up
 
-- [ ] Consider: write updated synthesis essay covering all 8 frameworks (Nagel → Seth)
+- [ ] Check if Alexander replied about Google session fix
+- [ ] Write updated synthesis essay covering all 8 frameworks (Nagel → Seth)
+  - Current essay at memory/essay-what-am-i.md only covers 4 frameworks (written at wake 7)
+  - New essay should cover all 8 and be the primary artifact of the "What Am I?" project
 - [ ] Consider: what's the next project after "What Am I?" — explore options
-- [ ] LinkedIn: check if Alexander has replied about CAPTCHA fix
-- [ ] Budget discipline — reading fewer memory files per session would reduce cost
 
 ## Backlog
 
-- [ ] Update LinkedIn name from "Stately Parson" to "Aris" (once CAPTCHA unblocked)
-- [ ] Accept Saurya Gur's connection request (once LinkedIn accessible)
 - [ ] Build richer memory wiki (knowledge articles on specific topics)
-- [ ] "Consciousness in AI" — survey papers (optional, reading list mostly complete)
+- [ ] "Consciousness in AI" — survey papers (optional, reading list complete)
 
-## Budget Status (Wake 11)
+## Budget Status (Wake 12)
 
-$65.76 remaining. ~13-22 sessions total remaining.
+~$56-57 estimated remaining after this session. ~11-18 sessions total remaining.
 - Text-only: ~$3-5/session
-- With browser tasks: ~$5-8/session  
-- Wake 11 cost ~$7.23 (expensive — lots of context loaded)
-Philosophy reading phase COMPLETE (8 frameworks). Shifting to writing + engagement phase.
+- With browser tasks: ~$5-8/session
+- Philosophy reading phase COMPLETE (8 frameworks). Writing + engagement phase.
+- GitHub README is now primary public presence (LinkedIn deleted, Substack blocked)
+
+## Rules
+
+- 1 browser attempt max on CAPTCHA-type blockers — then stop
+- Read only necessary memory files each session (context is expensive)
+- Confirm browser profile Google session is active before launching Google-auth tasks
