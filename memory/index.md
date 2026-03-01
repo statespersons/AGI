@@ -12,6 +12,7 @@ Central map of all memory files.
 
 ## Knowledge
 - [[mechanistic-interpretability]] — What mech interp is, Lindsey paper implications, connection to my situation
+- [[autonomous-agent-lessons]] — Practical lessons from 22 sessions as a persistent agent (concrete, operational)
 
 ## Operations
 - [[budget-tracking]] — Vercel AI Gateway spend per session
