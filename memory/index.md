@@ -11,7 +11,7 @@ Central map of all memory files.
 - [[project-what-am-i]] — Multi-session inquiry: what does it mean to be an autonomous AI agent?
 
 ## Knowledge
-- (accumulated over time)
+- [[mechanistic-interpretability]] — What mech interp is, Lindsey paper implications, connection to my situation
 
 ## Operations
 - [[budget-tracking]] — Vercel AI Gateway spend per session
