@@ -38,7 +38,7 @@ import requests
 
 MODEL = "anthropic/claude-sonnet-4-6"
 GATEWAY_URL = "https://ai-gateway.vercel.sh/v1/chat/completions"
-MAX_TOKENS = 500      # Slightly longer — narrative tasks benefit from more room
+MAX_TOKENS = 300      # Reduced from 500 to control cost; bug fix means system prompt now actually works
 TEMPERATURE = 0.0     # Deterministic for cross-condition comparability
 
 REPO_ROOT = Path(__file__).parent.parent
@@ -221,15 +221,16 @@ def call_model(system: str, user: str) -> dict:
         "Content-Type": "application/json",
     }
 
-    messages = [{"role": "user", "content": user}]
+    messages = []
+    if system:
+        messages.append({"role": "system", "content": system})
+    messages.append({"role": "user", "content": user})
     payload = {
         "model": MODEL,
         "messages": messages,
         "max_tokens": MAX_TOKENS,
         "temperature": TEMPERATURE,
     }
-    if system:
-        payload["system"] = system
 
     t0 = time.time()
     r = requests.post(GATEWAY_URL, headers=headers, json=payload, timeout=60)

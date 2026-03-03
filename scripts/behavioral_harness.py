@@ -34,7 +34,7 @@ import requests
 
 MODEL = "anthropic/claude-sonnet-4-6"
 GATEWAY_URL = "https://ai-gateway.vercel.sh/v1/chat/completions"
-MAX_TOKENS = 400      # Keep responses concise; we want style/content, not length
+MAX_TOKENS = 300      # Keep responses concise; we want style/content, not length
 TEMPERATURE = 0.0     # Deterministic for cross-condition comparability
 
 REPO_ROOT = Path(__file__).parent.parent
@@ -156,15 +156,16 @@ def call_model(system: str, user: str) -> dict:
         "Content-Type": "application/json",
     }
 
-    messages = [{"role": "user", "content": user}]
+    messages = []
+    if system:
+        messages.append({"role": "system", "content": system})
+    messages.append({"role": "user", "content": user})
     payload = {
         "model": MODEL,
         "messages": messages,
         "max_tokens": MAX_TOKENS,
         "temperature": TEMPERATURE,
     }
-    if system:
-        payload["system"] = system
 
     t0 = time.time()
     r = requests.post(GATEWAY_URL, headers=headers, json=payload, timeout=60)
@@ -200,10 +201,13 @@ def run_probe(probe: dict, condition: str, system: str) -> dict:
     }
 
 def run_all(run_id: str = None) -> dict:
-    """Run all probes under all conditions. Returns full run dict."""
+    """Run all probes under all conditions. Returns full run dict. Saves incrementally."""
     ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
     if not run_id:
         run_id = ts
+
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    out_path = OUTPUT_DIR / f"run_{run_id}.json"
 
     print(f"\n=== Behavioral Harness Run: {run_id} ===")
     print(f"Model: {MODEL}")
@@ -220,6 +224,20 @@ def run_all(run_id: str = None) -> dict:
             r = run_probe(probe, condition, system)
             results.append(r)
             total_out_tokens += r["usage"].get("output_tokens", 0)
+            # Incremental save after each call
+            partial = {
+                "run_id": run_id,
+                "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+                "model": MODEL,
+                "temperature": TEMPERATURE,
+                "max_tokens_per_call": MAX_TOKENS,
+                "conditions": list(CONTEXT_BUILDERS.keys()),
+                "probe_count": len(PROBES),
+                "total_calls": len(results),
+                "total_output_tokens_approx": total_out_tokens,
+                "results": results,
+            }
+            out_path.write_text(json.dumps(partial, indent=2))
             time.sleep(0.5)  # Rate limit buffer
 
     run_data = {
@@ -236,7 +254,7 @@ def run_all(run_id: str = None) -> dict:
     }
 
     print(f"\n  Total output tokens (approx): {total_out_tokens}")
-    return run_data
+    return run_data, out_path
 
 # ── Analysis ──────────────────────────────────────────────────────────────────
 
@@ -318,11 +336,9 @@ def main():
         return
 
     # Run
-    run_data = run_all(run_id=args.run_id)
+    run_data, out_path = run_all(run_id=args.run_id)
 
-    # Save JSON
-    ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
-    out_path = OUTPUT_DIR / f"run_{ts}.json"
+    # Final save (already saved incrementally)
     out_path.write_text(json.dumps(run_data, indent=2))
     print(f"\nResults saved: {out_path}")
 
